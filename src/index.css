@@ -1,0 +1,97 @@
+/* Trong Tailwind v4, chúng ta chỉ cần import tailwind trực tiếp */
+@import "tailwindcss";
+
+@theme {
+  /* Định nghĩa các font chữ và màu sắc tùy chỉnh tại đây */
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  
+  /* Thêm các hiệu ứng đổ bóng tùy chỉnh */
+  --shadow-gold: 0 0 20px rgba(252, 213, 53, 0.15);
+  --shadow-green: 0 4px 12px rgba(14, 203, 129, 0.2);
+  --shadow-red: 0 4px 12px rgba(246, 70, 93, 0.2);
+}
+
+@layer base {
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #0b0e11;
+    color: #eaecef;
+    /* Thay đổi ở đây: */
+    min-height: 100vh; /* Cho phép dài hơn 100vh nếu cần */
+    overflow-x: hidden; /* Cấm tuyệt đối trượt ngang */
+    overflow-y: auto;   /* Cho phép cuộn dọc trên mobile */
+    
+    /* Giữ cho desktop không bị cuộn nếu bạn muốn layout cố định */
+    @media (min-width: 768px) {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: absolute;
+    top: -10%;
+    right: 0; /* Sửa -10% thành 0 để không bị đẩy chiều ngang */
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(252, 213, 53, 0.05) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+  }
+}
+
+@layer components {
+  /* Button Chính - Màu Vàng Binance */
+  .btn-primary {
+    @apply relative overflow-hidden bg-[#fcd535] text-[#0b0e11] font-bold py-2 px-6 rounded-md 
+           transition-all duration-200 active:scale-95 hover:brightness-110
+           shadow-[--shadow-gold];
+  }
+
+  /* Hiệu ứng tia sáng chạy ngang qua button */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shine::after {
+    content: "";
+    @apply absolute top-0 -left-full w-full h-full bg-white/30 -skew-x-[25deg] transition-all duration-500;
+  }
+  .btn-shine:hover::after {
+    @apply left-[150%];
+  }
+
+  /* Button Trading */
+  .btn-buy {
+    @apply bg-[#0ecb81] hover:bg-[#0bb371] text-white font-semibold py-2 rounded-sm 
+           transition-all shadow-[--shadow-green] active:scale-[0.98];
+  }
+
+  .btn-sell {
+    @apply bg-[#f6465d] hover:bg-[#d93e52] text-white font-semibold py-2 rounded-sm 
+           transition-all shadow-[--shadow-red] active:scale-[0.98];
+  }
+
+  /* Sidebar Icon */
+  .sidebar-icon {
+    @apply p-2 rounded-xl transition-all duration-300 cursor-pointer text-[#848e9c] 
+           hover:text-[#fcd535] hover:bg-[#2b3139]/50;
+  }
+}
+
+@layer utilities {
+  /* Hiệu ứng phát sáng cho con số */
+  .glow-green { text-shadow: 0 0 10px rgba(14, 203, 129, 0.4); }
+  .glow-red { text-shadow: 0 0 10px rgba(246, 70, 93, 0.4); }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-[#3b424d] rounded-full;
+  }
+}
